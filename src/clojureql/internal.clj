@@ -84,6 +84,16 @@
               (str tname "_subselect." col)))
          (remove aggregate? tcols))))
 
+(defn to-delimited-identifier
+  [delimiter qualified-name]
+  (let [identifiers (seq (.split (name qualified-name) "\\."))
+        [fd bd] (if (coll? delimiter)
+                  delimiter
+                  [delimiter delimiter])]
+    (apply str (interpose "." (map #(if (= % "*")
+                                      %
+                                      (str fd % bd)) identifiers)))))
+
 (defn to-orderlist
   "Converts a list like [:id#asc :name#desc] to \"id asc, name desc\"
 
