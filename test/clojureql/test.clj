@@ -3,8 +3,12 @@
   (:use clojure.contrib.sql
         clojure.test
         clojureql.core
-        [clojure.contrib.io :only [delete-file]]
-        [cake :only [*opts*]]))
+        [clojure.contrib.io :only [delete-file]]))
+
+(try
+  (use '[cake :only [*opts*]])
+  (catch Exception _
+    (def *opts* {:integration true})))
 
 (when (:show-sql *opts*)
   (alter-var-root #'clojureql.core/*debug* (constantly true)))
